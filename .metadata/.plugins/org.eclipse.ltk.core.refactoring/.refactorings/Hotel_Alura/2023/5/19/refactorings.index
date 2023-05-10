@@ -4,3 +4,10 @@
 1683676113891	Rename local variable 'imagenLogin'
 1683676529424	Delete element
 1683676533932	Copy compilation unit
+1683678798217	Rename package 'Dao'
+1683681747887	Rename type 'Huespedes'
+1683681755773	Rename type 'Reservas'
+1683683215380	Delete element
+1683683228105	Rename type 'ReservasView2'
+1683695353157	Rename field 'Id'
+1683695383260	Rename field 'Id'

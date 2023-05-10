@@ -313,6 +313,14 @@ public class ReservasView extends JFrame {
 		btnsiguiente.setBounds(238, 493, 122, 35);
 		panel.add(btnsiguiente);
 		btnsiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+		
+		JLabel imgSiguiente= new JLabel("Continuar");
+		imgSiguiente.setFont(new Font("Roboto", Font.PLAIN, 18));
+		imgSiguiente.setForeground(new Color(255, 255, 255));
+		imgSiguiente.setBounds(0, 0, 122, 35);
+		btnsiguiente.add(imgSiguiente);
+		imgSiguiente.setHorizontalAlignment(SwingConstants.CENTER);
+		imgSiguiente.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/imagenes/calendario.png")));
 
 	}
 
