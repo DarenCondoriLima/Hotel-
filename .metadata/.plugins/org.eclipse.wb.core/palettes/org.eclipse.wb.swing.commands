@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+	<addCategory
+		id="custom_1683596326490"
+		name="1"
+		description="111"
+		visible="true"
+		open="true"/>
+	<addComponent
+		id="custom_1683596408122"
+		name="JCalendar"
+		visible="true"
+		class="com.toedter.calendar.JCalendar"
+		category="custom_1683596326490"/>
+	<addComponent
+		id="custom_1683596572282"
+		name="JComboBox"
+		visible="true"
+		class="javax.swing.JComboBox"
+		category="custom_1683596326490"/>
+	<removeEntry
+		id="custom_1683596572282"/>
+	<removeCategory
+		id="custom_1683596326490"/>
+</commands>
