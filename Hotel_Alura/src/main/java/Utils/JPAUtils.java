@@ -9,6 +9,7 @@ public class JPAUtils {
 	private static EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("hotelalura2");
 	
 	public static EntityManager getEntityManager() {
-		return FACTORY.createEntityManager();
+		System.out.println("Iniciando conexión");
+		return FACTORY.createEntityManager();		
 	}
 }

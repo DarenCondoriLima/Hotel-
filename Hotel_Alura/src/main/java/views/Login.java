@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Controller.User_Password_Controler;
+import Dao.User_PasswordDAO;
+import Modelo.User_Password;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,6 +34,7 @@ public class Login extends JFrame {
 	private JPasswordField txtContrasena;
 	int xMouse, yMouse;
 	private JLabel labelExit;
+	private User_Password_Controler controller_UP = new User_Password_Controler();
 
 	/**
 	 * Launch the application.
@@ -237,18 +243,20 @@ public class Login extends JFrame {
 	}
 
 	private void Login() {
-		String Usuario = "admin";
-		String Contraseña = "admin";
 
-		String contrase = new String(txtContrasena.getPassword());
+	    String user = new String(txtUsuario.getText());
+	    String password = new String(txtContrasena.getPassword());
+	    
+	    System.out.println("User: " + user + " , " + "Password: " + password );
 
-		if (txtUsuario.getText().equals(Usuario) && contrase.equals(Contraseña)) {
-			MenuUsuario menu = new MenuUsuario();
-			menu.setVisible(true);
-			dispose();
-		} else {
-			JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
-		}
+	    if (controller_UP.login(user, password)) {
+	        MenuUsuario menu = new MenuUsuario();
+	        menu.setVisible(true);
+	        dispose();
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+	    }
+
 	}
 
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {

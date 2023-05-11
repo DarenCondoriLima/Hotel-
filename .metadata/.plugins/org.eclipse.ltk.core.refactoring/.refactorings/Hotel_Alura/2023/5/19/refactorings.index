@@ -11,3 +11,10 @@
 1683683228105	Rename type 'ReservasView2'
 1683695353157	Rename field 'Id'
 1683695383260	Rename field 'Id'
+1683766397199	Rename type 'UsuariosYContrasenhasDAO'
+1683766727520	Delete element
+1683767205298	Rename package 'DAO'
+1683767225903	Rename package 'dao'
+1683767351516	Rename type 'Usuario_ContrasenhaDAO'
+1683767400316	Rename type 'Usuario_Contrasenha'
+1683767867600	Rename field 'name'
