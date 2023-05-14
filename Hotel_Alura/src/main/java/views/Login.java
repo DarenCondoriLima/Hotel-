@@ -1,27 +1,25 @@
 package views;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import Controller.User_Password_Controler;
-import Dao.User_PasswordDAO;
-import Modelo.User_Password;
-
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JSeparator;
-import java.awt.SystemColor;
+import java.awt.EventQueue;
 import java.awt.Font;
-import javax.swing.JPasswordField;
-import javax.swing.SwingConstants;
+import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import Controller.User_Password_Controler;
 
 public class Login extends JFrame {
 
@@ -209,12 +207,12 @@ public class Login extends JFrame {
 		btnLogin.setLayout(null);
 		btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-		JLabel lblNewLabel = new JLabel("ENTRAR");
-		lblNewLabel.setBounds(0, 0, 122, 44);
-		btnLogin.add(lblNewLabel);
-		lblNewLabel.setForeground(SystemColor.controlLtHighlight);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Roboto", Font.PLAIN, 18));
+		JLabel LabelEntrar = new JLabel("ENTRAR");
+		LabelEntrar.setBounds(0, 0, 122, 44);
+		btnLogin.add(LabelEntrar);
+		LabelEntrar.setForeground(SystemColor.controlLtHighlight);
+		LabelEntrar.setHorizontalAlignment(SwingConstants.CENTER);
+		LabelEntrar.setFont(new Font("Roboto", Font.PLAIN, 18));
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -254,7 +252,8 @@ public class Login extends JFrame {
 	        menu.setVisible(true);
 	        dispose();
 	    } else {
-	        JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+	    	MensajeError error= new MensajeError("Usuario o Contraseña no válidos");
+	    	error.setVisible(true);
 	    }
 
 	}

@@ -10,7 +10,7 @@ import Utils.JPAUtils;
 public class Pruebas_login {
 
 	public static void main(String[] args) {
-//		registrar();
+		registrar();
 //		EntityManager em=JPAUtils.getEntityManager();
 		
 //		User_Password find = em.find(User_Password.class, new LoginId("Juan", "password1234"));
@@ -23,7 +23,7 @@ public class Pruebas_login {
 		//User_Password find=controller.login("Juan", "password1234");
 		//System.out.println(find.getUser());
 		
-		if(controller.login("Jan", "passwd1234")) {
+		if(controller.login("Juan", "password1234")) {
 			System.out.println("Correcto");
 		}
 		else {
@@ -34,16 +34,16 @@ public class Pruebas_login {
 	public static void  registrar() {
 		User_Password usuario1= new User_Password("Juan", "password1234");
 
-		EntityManager em=JPAUtils.getEntityManager();
+//		EntityManager em=JPAUtils.getEntityManager();
 		
-		User_PasswordDAO user_PasswordDAO= new User_PasswordDAO(em);
+		User_PasswordDAO user_PasswordDAO= new User_PasswordDAO();
 		
-		em.getTransaction().begin();
+//		em.getTransaction().begin();
 		
 		user_PasswordDAO.guardar(usuario1);
 		
-		em.getTransaction().commit();
-		em.close();
+//		em.getTransaction().commit();
+//		em.close();
 		
 	}
 	

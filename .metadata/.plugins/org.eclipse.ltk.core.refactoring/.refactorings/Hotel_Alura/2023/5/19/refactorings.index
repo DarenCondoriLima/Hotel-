@@ -18,3 +18,5 @@
 1683767351516	Rename type 'Usuario_ContrasenhaDAO'
 1683767400316	Rename type 'Usuario_Contrasenha'
 1683767867600	Rename field 'name'
+1683941579903	Rename field 'reservaDao'
+1683967838148	Rename local variable 'buscarId'

@@ -6,6 +6,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="E:\1-Oracle\Java\Java y Spring Boot G4 - ONE\Java y JDBC Trabajando con una Base de Datos"/>
 			<item value="E:\1-Oracle\Java\Java y Spring Boot G4 - ONE\challenge one alura hotel- view+"/>
 			<item value="E:\1-Oracle\Java\Java y Spring Boot G4 - ONE\Java y JPA consultas avanzadas, rendimiento y modelos complejos\JPA-con-hibernate-Alura--stage-final"/>
 		</list>

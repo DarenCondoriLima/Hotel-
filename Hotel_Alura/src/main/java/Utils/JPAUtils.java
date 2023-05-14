@@ -5,11 +5,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class JPAUtils {
-
-	private static EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("hotelalura2");
 	
+	private static final String DataBase = "hotelalura2";
+	private static EntityManagerFactory entityManagerFactory;
+
+	private JPAUtils() {
+	    }
+
 	public static EntityManager getEntityManager() {
-		System.out.println("Iniciando conexión");
-		return FACTORY.createEntityManager();		
+		if (entityManagerFactory == null) {
+			entityManagerFactory = Persistence.createEntityManagerFactory(DataBase);
+		}
+		return entityManagerFactory.createEntityManager();
 	}
 }

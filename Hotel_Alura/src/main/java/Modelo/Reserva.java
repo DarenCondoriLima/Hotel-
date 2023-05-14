@@ -1,7 +1,6 @@
 package Modelo;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,45 +10,61 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "reserva")
+@Table(name = "reservas")
 public class Reserva {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private Date fechaEntrada;
-	private Date fechaSalida;
+	private String tipoHabitacion;
+	private String fechaEntrada;
+	private String fechaSalida;
 	private BigDecimal valor;
 	private String formaPago;
 		
 	@ManyToOne
 	private Huesped huesped;
 
-	public Reserva() {
+	public Reserva() {}
+	
+	public Reserva(String tipoHabitacion,String fechaEntrada, String fechaSalida, BigDecimal valor, String formaPago) {
+		this.tipoHabitacion=tipoHabitacion;
+		this.fechaEntrada = fechaEntrada;
+		this.fechaSalida = fechaSalida;
+		this.valor = valor;
+		this.formaPago = formaPago;
 	}
-
-	public Reserva(Date fechaEntrada, Date fechaSalida, BigDecimal valor, String formaPago, Huesped huesped) {
+	
+	public Reserva(String tipoHabitacion,String fechaEntrada, String fechaSalida, BigDecimal valor, String formaPago, Huesped huesped) {
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
 		this.valor = valor;
 		this.formaPago = formaPago;
 		this.huesped = huesped;
 	}
+	
+	public String getTipoHabitacion() {
+		return tipoHabitacion;
+	}
 
-	public Date getFechaEntrada() {
+	public void setTipoHabitacion(String tipoHabitacion) {
+		this.tipoHabitacion = tipoHabitacion;
+	}
+
+	public String getFechaEntrada() {
 		return fechaEntrada;
 	}
 
-	public void setFechaEntrada(Date fechaEntrada) {
+	public void setFechaEntrada(String fechaEntrada) {
 		this.fechaEntrada = fechaEntrada;
 	}
 
-	public Date getFechaSalida() {
+	public String getFechaSalida() {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(String fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 
@@ -80,5 +95,4 @@ public class Reserva {
 	public Long getId() {
 		return id;
 	}
-	
 }

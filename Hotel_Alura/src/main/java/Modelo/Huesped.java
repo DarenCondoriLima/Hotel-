@@ -1,14 +1,14 @@
 package Modelo;
 
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Id;
 
 @Entity
 @Table(name = "huespedes")
@@ -20,13 +20,29 @@ public class Huesped {
 	
 	private String nombre;
 	private String Apellido;
-	private Date fechaDeNacimiento;
+	private String fechaDeNacimiento;
 	private String nacionalidad;
 	private int telefono;
 	
 	@OneToMany(mappedBy="huesped")
-	private List<Reserva> reservas;
+	private List<Reserva> reserva =  new ArrayList<>();
+	
+	public Huesped() {}
 
+	public Huesped(String nombre, String apellido, String fechaDeNacimiento, String nacionalidad, int telefono) {
+		super();
+		this.nombre = nombre;
+		Apellido = apellido;
+		this.fechaDeNacimiento = fechaDeNacimiento;
+		this.nacionalidad = nacionalidad;
+		this.telefono = telefono;
+	}
+	
+	public void agregarReserva(Reserva reserva) {
+		reserva.setHuesped(this);
+		this.reserva.add(reserva);
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -43,11 +59,11 @@ public class Huesped {
 		Apellido = apellido;
 	}
 
-	public Date getFechaDeNacimiento() {
+	public String getFechaDeNacimiento() {
 		return fechaDeNacimiento;
 	}
 
-	public void setFechaDeNacimiento(Date fechaDeNacimiento) {
+	public void setFechaDeNacimiento(String fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 
@@ -68,11 +84,11 @@ public class Huesped {
 	}
 
 	public List<Reserva> getReservas() {
-		return reservas;
+		return reserva;
 	}
 
 	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+		this.reserva = reservas;
 	}
 
 	public Long getId() {

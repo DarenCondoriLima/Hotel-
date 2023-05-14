@@ -10,7 +10,7 @@ public class User_Password {
 
 	@EmbeddedId
 	private LoginId loginId;
-
+	
 	public User_Password() {}
 
 	public User_Password(String nombre,String contrasehna) {

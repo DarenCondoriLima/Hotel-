@@ -11,4 +11,8 @@
 			<item value="org.eclipse.wb/org.eclipse.wb.rcp/org.eclipse.wb.rcp.forms"/>
 		</list>
 	</section>
+	<section name="ImportExportAction">
+	</section>
+	<section name="org.eclipse.ui.preferences.keysPreferencePage">
+	</section>
 </section>
