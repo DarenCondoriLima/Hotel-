@@ -1,4 +1,6 @@
 package Controller;
+import java.util.List;
+
 import Dao.HuespedDAO;
 import Modelo.Huesped;
 
@@ -20,5 +22,17 @@ public class Huesped_Controller {
 	
 	public void eliminar(Huesped huesped) {
 		this.huespedDAO.eliminar(huesped);
+	}
+	
+	public Huesped buscarId(Long id) {
+		return this.huespedDAO.buscarId(id);
+	}
+	
+	public List<Huesped> getDatos() {
+		return this.huespedDAO.getDatos();
+	}
+	
+	public String getReservas(Huesped huesped) {
+		return this.huespedDAO.getReservas(huesped);
 	}
 }

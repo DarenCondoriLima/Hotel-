@@ -1,13 +1,19 @@
 package Dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import Modelo.Reserva;
 import Utils.JPAUtils;
 
 public class ReservaDAO {
 	
-	private EntityManager em;
+	private static EntityManager em;
 
 	public ReservaDAO() {
 		em = JPAUtils.getEntityManager();
@@ -51,4 +57,16 @@ public class ReservaDAO {
         String jpql =" SELECT R FROM Reserva AS R WHERE R.id=:id ";
         return em.createQuery(jpql,Reserva.class).setParameter("id", id).getSingleResult();
     }
+	
+	public List<Reserva> getDatos() {
+		try {
+		em.getTransaction().begin();
+		List<Reserva> reservas = em.createQuery("FROM Reserva",Reserva.class).getResultList();
+		return reservas;
+		}
+		finally {
+		em.close();
+		}
+	}
+
 }

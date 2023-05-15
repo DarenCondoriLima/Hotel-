@@ -2,6 +2,7 @@ package Controller;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import Dao.ReservaDAO;
 import Modelo.Reserva;
@@ -29,6 +30,10 @@ public class Reserva_Controller {
 	public Reserva buscarId(Long id) {
 		return this.reservaDAO.buscarId(id);
 	}
+	
+	public List<Reserva> getDatos(){
+		return this.reservaDAO.getDatos();
+	}
 
 	//Métodos que no involucran conexión con la Base de Datos.
 		public BigDecimal Calcular_Valor(Date date1, Date date2,BigDecimal tipoHabicionValor) {
@@ -42,6 +47,8 @@ public class Reserva_Controller {
 		}
 
 		public BigDecimal Calcular_Dias(Date date1, Date date2) {
+//			(24 horas * 60 minutos * 60 segundos * 1000 milisegundos), se utiliza obtener los milisegundos de un dia,
+//			pues la diferencia entre las fechas da un resultado en milisegundos.
 			BigDecimal diasReserva = new BigDecimal((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24))
 					.add(new BigDecimal(1));
 			System.out.println("Dias= " + diasReserva);
