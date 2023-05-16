@@ -1,12 +1,8 @@
 package Dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import Modelo.Reserva;
 import Utils.JPAUtils;
@@ -59,14 +55,13 @@ public class ReservaDAO {
     }
 	
 	public List<Reserva> getDatos() {
+		List<Reserva> reservas = null;
 		try {
-		em.getTransaction().begin();
-		List<Reserva> reservas = em.createQuery("FROM Reserva",Reserva.class).getResultList();
+		reservas = em.createQuery("FROM Reserva",Reserva.class).getResultList();
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
 		return reservas;
-		}
-		finally {
-		em.close();
-		}
 	}
-
 }

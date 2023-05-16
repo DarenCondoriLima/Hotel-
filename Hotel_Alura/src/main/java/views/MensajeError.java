@@ -24,12 +24,13 @@ import javax.swing.SwingConstants;
 public class MensajeError extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private boolean okPresionado = false;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			MensajeError dialog = new MensajeError("error");
+			MensajeError dialog = new MensajeError("Error");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -74,6 +75,7 @@ public class MensajeError extends JDialog {
 			contentPanel.add(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					okPresionado = true;
 					dispose();// sirve para cerrar la ventana actual
 				}
 			});
@@ -85,7 +87,13 @@ public class MensajeError extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		}
+		setModal(true);
 	}
+	
+	public boolean isOkPresionado() {
+        return okPresionado;
+    }
+	
 	private int sizeFrase(String frase) {
 		Font font = new Font("Arial", Font.BOLD, 18);
 		FontMetrics metrics = new JLabel().getFontMetrics(font);

@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -71,6 +72,7 @@ public class RegistroHuesped extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RegistroHuesped(Long id) {
 		this.idActual = id;
 
@@ -165,7 +167,7 @@ public class RegistroHuesped extends JFrame {
 		btnAtras.setBackground(new Color(12, 138, 199));
 		btnAtras.setBounds(0, 0, 53, 36);
 		header.add(btnAtras);
-
+		
 		labelAtras = new JLabel("<");
 		labelAtras.setHorizontalAlignment(SwingConstants.CENTER);
 		labelAtras.setForeground(Color.WHITE);
@@ -379,14 +381,15 @@ public class RegistroHuesped extends JFrame {
 		logo.setIcon(new ImageIcon(RegistroHuesped.class.getResource("/imagenes/Ha-100px.png")));
 	}
 
-	private void guardar() {
+	private void guardar() throws ParseException {
 		Date fechaNacimiento = txtFechaN.getDate();
 		String nacionalidad = (String) txtNacionalidad.getSelectedItem();
 		int telefono = Integer.parseInt(txtTelefono.getText());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String fechaNacimientoStr = sdf.format(fechaNacimiento);
+		Date fechaNacimientoFormatted = sdf.parse(fechaNacimientoStr);
 
-		Huesped huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), fechaNacimientoStr, nacionalidad,
+		Huesped huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), fechaNacimientoFormatted, nacionalidad,
 				telefono);
 
 		Reserva id = controllerR.buscarId(idActual);

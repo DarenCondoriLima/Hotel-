@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +19,8 @@ public class Reserva {
 	private Long id;
 	
 	private String tipoHabitacion;
-	private String fechaEntrada;
-	private String fechaSalida;
+	private Date fechaEntrada;
+	private Date fechaSalida;
 	private BigDecimal valor;
 	private String formaPago;
 		
@@ -28,7 +29,7 @@ public class Reserva {
 
 	public Reserva() {}
 	
-	public Reserva(String tipoHabitacion,String fechaEntrada, String fechaSalida, BigDecimal valor, String formaPago) {
+	public Reserva(String tipoHabitacion,Date fechaEntrada, Date fechaSalida, BigDecimal valor, String formaPago) {
 		this.tipoHabitacion=tipoHabitacion;
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
@@ -36,7 +37,7 @@ public class Reserva {
 		this.formaPago = formaPago;
 	}
 	
-	public Reserva(String tipoHabitacion,String fechaEntrada, String fechaSalida, BigDecimal valor, String formaPago, Huesped huesped) {
+	public Reserva(String tipoHabitacion,Date fechaEntrada, Date fechaSalida, BigDecimal valor, String formaPago, Huesped huesped) {
 		this.fechaEntrada = fechaEntrada;
 		this.fechaSalida = fechaSalida;
 		this.valor = valor;
@@ -52,20 +53,20 @@ public class Reserva {
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	public String getFechaEntrada() {
+	public Date getFechaEntrada() {
 		return fechaEntrada;
 	}
 
-	public void setFechaEntrada(String fechaEntrada) {
-		this.fechaEntrada = fechaEntrada;
+	public Date setFechaEntrada(Date fechaEntrada) {
+		return this.fechaEntrada = fechaEntrada;
 	}
 
-	public String getFechaSalida() {
+	public Date getFechaSalida() {
 		return fechaSalida;
 	}
 
-	public void setFechaSalida(String fechaSalida) {
-		this.fechaSalida = fechaSalida;
+	public Date setFechaSalida(Date fechaSalida) {
+		return this.fechaSalida = fechaSalida;
 	}
 
 	public BigDecimal getValor() {

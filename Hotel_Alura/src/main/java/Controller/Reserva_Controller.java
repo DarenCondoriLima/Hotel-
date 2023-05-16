@@ -34,7 +34,7 @@ public class Reserva_Controller {
 	public List<Reserva> getDatos(){
 		return this.reservaDAO.getDatos();
 	}
-
+	
 	//Métodos que no involucran conexión con la Base de Datos.
 		public BigDecimal Calcular_Valor(Date date1, Date date2,BigDecimal tipoHabicionValor) {
 			try {
@@ -74,4 +74,5 @@ public class Reserva_Controller {
 			
 			return valorH;
 		}
+
 }

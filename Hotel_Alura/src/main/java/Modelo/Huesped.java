@@ -1,8 +1,10 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,19 +22,19 @@ public class Huesped {
 	
 	private String nombre;
 	private String Apellido;
-	private String fechaDeNacimiento;
+	private Date fechaDeNacimiento;
 	private String nacionalidad;
 	private int telefono;
 	
-	@OneToMany(mappedBy="huesped")
+	@OneToMany(mappedBy="huesped", cascade = CascadeType.REMOVE)
 	private List<Reserva> reserva =  new ArrayList<>();
 	
 	public Huesped() {}
 
-	public Huesped(String nombre, String apellido, String fechaDeNacimiento, String nacionalidad, int telefono) {
+	public Huesped(String nombre, String apellido, Date fechaDeNacimiento, String nacionalidad, int telefono) {
 		super();
 		this.nombre = nombre;
-		Apellido = apellido;
+		this.Apellido = apellido;
 		this.fechaDeNacimiento = fechaDeNacimiento;
 		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
@@ -59,11 +61,11 @@ public class Huesped {
 		Apellido = apellido;
 	}
 
-	public String getFechaDeNacimiento() {
+	public Date getFechaDeNacimiento() {
 		return fechaDeNacimiento;
 	}
 
-	public void setFechaDeNacimiento(String fechaDeNacimiento) {
+	public void setFechaDeNacimiento(Date fechaDeNacimiento) {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 

@@ -35,4 +35,19 @@ public class Huesped_Controller {
 	public String getReservas(Huesped huesped) {
 		return this.huespedDAO.getReservas(huesped);
 	}
+
+	public List<Huesped> buscarApellido(String parametros) {
+		return this.huespedDAO.buscarApellido(parametros);
+	}
+	
+	//Métodos que no involucran conexión con la Base de Datos.
+	
+	public Boolean esNumero(String text) {
+		try {
+			Long.parseLong(text);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 }

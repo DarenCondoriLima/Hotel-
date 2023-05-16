@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -70,6 +71,7 @@ public class ReservasView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ReservasView() {
 		super("Reserva");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("/imagenes/aH-40px.png")));
@@ -461,17 +463,19 @@ public class ReservasView extends JFrame {
 		return valor;
 	}
 	
-	private void guardar() {
+	private void guardar() throws ParseException {
 		Date fechaEntrada = txtFechaEntrada.getDate();
 		Date fechaSalida = txtFechaSalida.getDate();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String fechaEntradaStr = sdf.format(fechaEntrada);
 		String fechaSalidaStr = sdf.format(fechaSalida);
+		Date fechaEntradaFormatted = sdf.parse(fechaEntradaStr);
+		Date fechaSalidaFormatted = sdf.parse(fechaSalidaStr);
 		String formaPago = (String) txtFormaPago.getSelectedItem();
 		String habitacion = tipoHabicion();
 		BigDecimal valor = getValor();
 
-		Reserva reserva = new Reserva(habitacion, fechaEntradaStr, fechaSalidaStr, valor, formaPago);
+		Reserva reserva = new Reserva(habitacion, fechaEntradaFormatted, fechaSalidaFormatted, valor, formaPago);
 
 		controllerR.guardar(reserva);
 

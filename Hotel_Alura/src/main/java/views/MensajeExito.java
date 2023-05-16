@@ -77,7 +77,10 @@ public class MensajeExito extends JDialog {
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();// sirve para cerrar la ventana actual
-					ventana.setVisible(true);
+					try {
+					ventana.setVisible(true);}
+					catch (Exception ex) {
+					}
 				}
 			});
 			okButton.setActionCommand("OK");
