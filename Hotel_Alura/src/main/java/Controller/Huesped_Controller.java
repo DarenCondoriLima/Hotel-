@@ -1,8 +1,10 @@
 package Controller;
+import java.util.ArrayList;
 import java.util.List;
 
 import Dao.HuespedDAO;
 import Modelo.Huesped;
+import Modelo.Reserva;
 
 public class Huesped_Controller {
 	
@@ -31,16 +33,26 @@ public class Huesped_Controller {
 	public List<Huesped> getDatos() {
 		return this.huespedDAO.getDatos();
 	}
-	
-	public String getReservas(Huesped huesped) {
-		return this.huespedDAO.getReservas(huesped);
-	}
 
 	public List<Huesped> buscarApellido(String parametros) {
 		return this.huespedDAO.buscarApellido(parametros);
 	}
 	
+	public Huesped buscarHuesped(String apellidos) {
+		return this.huespedDAO.buscarHuesped(apellidos);
+	}
+	
 	//Métodos que no involucran conexión con la Base de Datos.
+	
+	public String getReservas(Huesped huesped) {
+		List<Long> reservasId = new ArrayList<>();
+		List<Reserva> reservas = huesped.getReservas();
+		for (Reserva Id : reservas) {
+			reservasId.add(Id.getId());
+		}
+		CharSequence[] reservasIdArray = reservasId.stream().map(Object::toString).toArray(CharSequence[]::new);
+		return String.join(",", reservasIdArray);
+	}
 	
 	public Boolean esNumero(String text) {
 		try {
@@ -50,4 +62,13 @@ public class Huesped_Controller {
 			return false;
 		}
 	}
+	
+	public Boolean esListaNumeros(String texto) {
+		if (texto.matches("\\d+(,\\d+)*")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

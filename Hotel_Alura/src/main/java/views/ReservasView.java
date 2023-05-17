@@ -14,7 +14,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -178,9 +177,11 @@ public class ReservasView extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
-				principal.setVisible(true);
-				dispose();
+				MensajeError error = new MensajeError("¿Seguro que desea salir? Los cambios no guardados se perderán.");
+				error.setVisible(true);
+				if(error.isOkPresionado()) {
+				System.exit(0);}
+				else {}
 			}
 
 			@Override
@@ -466,16 +467,14 @@ public class ReservasView extends JFrame {
 	private void guardar() throws ParseException {
 		Date fechaEntrada = txtFechaEntrada.getDate();
 		Date fechaSalida = txtFechaSalida.getDate();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		String fechaEntradaStr = sdf.format(fechaEntrada);
-		String fechaSalidaStr = sdf.format(fechaSalida);
-		Date fechaEntradaFormatted = sdf.parse(fechaEntradaStr);
-		Date fechaSalidaFormatted = sdf.parse(fechaSalidaStr);
+		java.sql.Date fechaEntradasql = new java.sql.Date(fechaEntrada.getTime());
+		java.sql.Date fechaSalidasql = new java.sql.Date(fechaSalida.getTime());
+		
 		String formaPago = (String) txtFormaPago.getSelectedItem();
 		String habitacion = tipoHabicion();
 		BigDecimal valor = getValor();
 
-		Reserva reserva = new Reserva(habitacion, fechaEntradaFormatted, fechaSalidaFormatted, valor, formaPago);
+		Reserva reserva = new Reserva(habitacion, fechaEntradasql, fechaSalidasql, valor, formaPago);
 
 		controllerR.guardar(reserva);
 

@@ -1,7 +1,7 @@
 package Modelo;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,20 +21,22 @@ public class Huesped {
 	private Long id;
 	
 	private String nombre;
-	private String Apellido;
+	private String ApellidoP;
+	private String ApellidoM;
 	private Date fechaDeNacimiento;
 	private String nacionalidad;
 	private int telefono;
 	
 	@OneToMany(mappedBy="huesped", cascade = CascadeType.REMOVE)
-	private List<Reserva> reserva =  new ArrayList<>();
+	private List<Reserva> reservas =  new ArrayList<>();
 	
 	public Huesped() {}
 
-	public Huesped(String nombre, String apellido, Date fechaDeNacimiento, String nacionalidad, int telefono) {
+	public Huesped(String nombre, String apellidoP, String apellidoM, Date fechaDeNacimiento, String nacionalidad, int telefono) {
 		super();
 		this.nombre = nombre;
-		this.Apellido = apellido;
+		this.ApellidoP = apellidoP;
+		this.ApellidoM = apellidoM;
 		this.fechaDeNacimiento = fechaDeNacimiento;
 		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
@@ -42,7 +44,7 @@ public class Huesped {
 	
 	public void agregarReserva(Reserva reserva) {
 		reserva.setHuesped(this);
-		this.reserva.add(reserva);
+		this.reservas.add(reserva);
 	}
 	
 	public String getNombre() {
@@ -53,12 +55,20 @@ public class Huesped {
 		this.nombre = nombre;
 	}
 
-	public String getApellido() {
-		return Apellido;
+	public String getApellidoP() {
+		return ApellidoP;
 	}
 
-	public void setApellido(String apellido) {
-		Apellido = apellido;
+	public void setApellidoP(String apellidoP) {
+		ApellidoP = apellidoP;
+	}
+	
+	public String getApellidoM() {
+		return ApellidoM;
+	}
+
+	public void setApellidoM(String apellidoM) {
+		ApellidoM = apellidoM;
 	}
 
 	public Date getFechaDeNacimiento() {
@@ -86,11 +96,11 @@ public class Huesped {
 	}
 
 	public List<Reserva> getReservas() {
-		return reserva;
+		return reservas;
 	}
 
 	public void setReservas(List<Reserva> reservas) {
-		this.reserva = reservas;
+		this.reservas = reservas;
 	}
 
 	public Long getId() {

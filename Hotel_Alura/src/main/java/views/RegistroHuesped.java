@@ -12,7 +12,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -110,9 +109,12 @@ public class RegistroHuesped extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
-				principal.setVisible(true);
-				dispose();
+				MensajeError error = new MensajeError("¿Seguro que desea salir? Los cambios no guardados se perderán.");
+				error.setVisible(true);
+				if (error.isOkPresionado()) {
+					System.exit(0);
+				} else {
+				}
 			}
 
 			@Override
@@ -167,7 +169,7 @@ public class RegistroHuesped extends JFrame {
 		btnAtras.setBackground(new Color(12, 138, 199));
 		btnAtras.setBounds(0, 0, 53, 36);
 		header.add(btnAtras);
-		
+
 		labelAtras = new JLabel("<");
 		labelAtras.setHorizontalAlignment(SwingConstants.CENTER);
 		labelAtras.setForeground(Color.WHITE);
@@ -331,18 +333,34 @@ public class RegistroHuesped extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Boolean verificarEdad = verificarEdad();
+				int telefono=1;
+				try {
+				telefono = Integer.parseInt(txtTelefono.getText());
+				}catch (NumberFormatException ex) {
+				}
 				if (txtNombre.getText() != null && txtApellido.getText() != null && txtFechaN.getDate() != null
 						&& txtNacionalidad.getSelectedItem() != " " && txtTelefono != null) {
 					if (verificarEdad == true) {
-						try {
-							guardar();
-							MenuUsuario usuario = new MenuUsuario();
-							System.out.println("Datos guardados");
-							dispose();
-							MensajeExito exito = new MensajeExito("Datos guardados satisfactoriamente", usuario);
-							exito.setVisible(true);
-						} catch (Exception ex) {
-
+						if (telefonoValido(telefono)) {
+							if(varificarApellidos()) {
+							try {
+								guardar();
+								MenuUsuario usuario = new MenuUsuario();
+								System.out.println("Datos guardados");
+								dispose();
+								MensajeExito exito = new MensajeExito("Datos guardados satisfactoriamente", usuario);
+								exito.setVisible(true);
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
+						}else {}
+						} else {
+							if(telefono==1) {
+								String telefonoS = txtTelefono.getText();
+								new MensajeError(String.format("El teléfono %s es inválido.", telefonoS)).setVisible(true);
+							}else {
+								new MensajeError(String.format("El teléfono %d es inválido.", telefono)).setVisible(true);
+							}
 						}
 					} else {
 					}
@@ -384,37 +402,93 @@ public class RegistroHuesped extends JFrame {
 	private void guardar() throws ParseException {
 		Date fechaNacimiento = txtFechaN.getDate();
 		String nacionalidad = (String) txtNacionalidad.getSelectedItem();
+		java.sql.Date fechaNacimientosql = new java.sql.Date(fechaNacimiento.getTime());
 		int telefono = Integer.parseInt(txtTelefono.getText());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		String fechaNacimientoStr = sdf.format(fechaNacimiento);
-		Date fechaNacimientoFormatted = sdf.parse(fechaNacimientoStr);
-
-		Huesped huesped = new Huesped(txtNombre.getText(), txtApellido.getText(), fechaNacimientoFormatted, nacionalidad,
-				telefono);
-
-		Reserva id = controllerR.buscarId(idActual);
-		controllerH.guardar(huesped);
-		huesped.agregarReserva(id);
-		id.setHuesped(huesped);
-		controllerR.actualizar(id);
+		if(verificarHuesped(txtApellido.getText())) {
+			
+			Huesped huesped = controllerH.buscarHuesped(txtApellido.getText());
+			Reserva id = controllerR.buscarId(idActual);
+			huesped.agregarReserva(id);
+			id.setHuesped(huesped);
+			controllerR.actualizar(id);
+		}else {
+			try {
+				String apellidos = txtApellido.getText();
+				String[] partes = apellidos.split(" ");
+				
+				String apellidoP = partes[0]; 
+				String apellidoM = partes[1]; 
+				
+				Huesped huesped = new Huesped(txtNombre.getText(),apellidoP,apellidoM , fechaNacimientosql, nacionalidad,
+						telefono);
+				
+				Reserva id = controllerR.buscarId(idActual);
+				controllerH.guardar(huesped);
+				huesped.agregarReserva(id);
+				id.setHuesped(huesped);
+				controllerR.actualizar(id);
+				
+			}catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
 	}
+	
+	private boolean varificarApellidos() {
+		try {
+			String apellidos = txtApellido.getText();
+			String[] partes = apellidos.split(" ");
 
-	private boolean verificarEdad() {
-		Date fechaNacimiento = txtFechaN.getDate();
-		LocalDate fechaNacimientoLocal = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		int edad = Period.between(fechaNacimientoLocal, LocalDate.now()).getYears();
-		if (edad >= 18) {
-			System.out.println("El usuario es mayor de edad. " + edad);
+			@SuppressWarnings("unused")
+			String apellidoP = partes[0]; 
+			@SuppressWarnings("unused")
+			String apellidoM = partes[1]; 
 			return true;
-		} else {
-			MensajeError error = new MensajeError(
-					"Se requiere que los usuarios sean mayores de edad para registrarse.");
+		}catch (Exception e) {
+			MensajeError error = new MensajeError("Se requiere sus dos apellidos.");
 			error.setVisible(true);
-			System.out.println("El usuario es menor de edad. " + edad);
+			return false;
+		}
+	}
+	
+	private boolean verificarEdad() {
+		try {
+			Date fechaNacimiento = txtFechaN.getDate();
+			LocalDate fechaNacimientoLocal = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			int edad = Period.between(fechaNacimientoLocal, LocalDate.now()).getYears();
+			if (edad >= 18 && edad <= 100) {
+				System.out.println("El usuario es mayor de edad. " + edad);
+				return true;
+			} else {
+				MensajeError error = new MensajeError(
+						"Se requiere que los usuarios sean mayores de edad y menores de 100 años para registrarse.");
+				error.setVisible(true);
+				System.out.println("El usuario es menor de edad. " + edad);
+				return false;
+			}
+		} catch (NullPointerException e) {
 			return false;
 		}
 	}
 
+	private Boolean telefonoValido(int numero) {
+		if (numero < 10 || numero > 999_999_999) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean verificarHuesped(String apellidos) {
+		try {
+		controllerH.buscarHuesped(apellidos);
+		return true;
+		}catch (Exception e) {
+		return false;	
+		}
+	}
+	
 	// Código que permite mover la ventana por la pantalla según la posición de "x"
 	// y "y"
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {

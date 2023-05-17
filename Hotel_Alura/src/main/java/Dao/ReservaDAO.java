@@ -36,18 +36,18 @@ public class ReservaDAO {
             throw e;
         }
     }
-
+	
 	public void eliminar(Reserva reserva) {
-        try {
-            em.getTransaction().begin();
-            reserva = em.merge(reserva);
-            em.remove(reserva);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            throw e;
-        }
-    }
+	    try {
+	        em.getTransaction().begin();
+	        reserva = em.merge(reserva);
+	        em.remove(reserva);
+	        em.getTransaction().commit();
+	    } catch (Exception e) {
+	        em.getTransaction().rollback();
+	        throw e;
+	    }
+	}
 	
 	public Reserva buscarId(Long id) {
         String jpql =" SELECT R FROM Reserva AS R WHERE R.id=:id ";

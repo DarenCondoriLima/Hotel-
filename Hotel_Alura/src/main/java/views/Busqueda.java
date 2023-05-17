@@ -7,8 +7,15 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 import javax.swing.ImageIcon;
@@ -23,6 +30,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.Huesped_Controller;
@@ -69,7 +78,7 @@ public class Busqueda extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -124,6 +133,16 @@ public class Busqueda extends JFrame {
 		modeloHuesped.addColumn("Números de Reservas");
 		cargarTablaR();
 		cargarTablaH();
+
+		ListSelectionModel selectionModelHuespedes = tbHuespedes.getSelectionModel();
+		selectionModelHuespedes.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting() && tbHuespedes.getSelectedColumn() == 6) {
+					bucarReservas(scroll_table, panel);
+				}
+			}
+		});
 		JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
 		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("/imagenes/pessoas.png")),
 				scroll_tableHuespedes, null);
@@ -165,12 +184,12 @@ public class Busqueda extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnAtras.setBackground(new Color(12, 138, 199));
-				labelAtras.setForeground(Color.white);
+				labelAtras.setBackground(new Color(255, 255, 255));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				btnAtras.setBackground(Color.white);
+				btnAtras.setBackground(new Color(255, 255, 255));
 				labelAtras.setForeground(Color.black);
 			}
 		});
@@ -189,21 +208,24 @@ public class Busqueda extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
-				usuario.setVisible(true);
-				dispose();
+				MensajeError error = new MensajeError("¿Seguro que desea salir? Los cambios no guardados se perderán.");
+				error.setVisible(true);
+				if (error.isOkPresionado()) {
+					System.exit(0);
+				} else {
+				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
 				btnexit.setBackground(Color.red);
-				labelExit.setForeground(Color.white);
+				labelExit.setBackground(new Color(255, 255, 255));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado
 													// original
-				btnexit.setBackground(Color.white);
+				btnexit.setBackground(new Color(255, 255, 255));
 				labelExit.setForeground(Color.black);
 			}
 		});
@@ -231,11 +253,23 @@ public class Busqueda extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String text = txtBuscar.getText();
 				if (text.isEmpty()) {
-					MensajeError error = new MensajeError("Se requiere que ingrese el número de reserva o el apellido del huésped");
+					MensajeError error = new MensajeError(
+							"Se requiere que ingrese los números de reservas o el apellido del huésped");
 					error.setVisible(true);
 				} else {
-					Buscar(text, scroll_tableHuespedes, scroll_table);
+					Buscar(text, scroll_tableHuespedes, scroll_table, panel);
 				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
+				btnbuscar.setBackground(new Color(118, 187, 223));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado
+													// original
+				btnbuscar.setBackground(new Color(12, 138, 199));
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -257,6 +291,17 @@ public class Busqueda extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				editar(scroll_tableHuespedes, scroll_table);
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
+				btnEditar.setBackground(new Color(118, 187, 223));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado
+													// original
+				btnEditar.setBackground(new Color(12, 138, 199));
+			}
 		});
 		btnEditar.setLayout(null);
 		btnEditar.setBackground(new Color(12, 138, 199));
@@ -277,6 +322,17 @@ public class Busqueda extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				eliminar(scroll_tableHuespedes, scroll_table);
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
+				btnEliminar.setBackground(new Color(118, 187, 223));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado
+													// original
+				btnEliminar.setBackground(new Color(12, 138, 199));
+			}
 		});
 		btnEliminar.setLayout(null);
 		btnEliminar.setBackground(new Color(12, 138, 199));
@@ -295,15 +351,24 @@ public class Busqueda extends JFrame {
 		btnRecargar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				limpiarTablaR();
-				limpiarTablaH();
-				cargarTablaR();
-				cargarTablaH();
+				recargar(scroll_tableHuespedes, scroll_table, panel);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) { // Al usuario pasar el mouse por el botón este cambiará de color
+				btnRecargar.setBackground(new Color(118, 187, 223));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) { // Al usuario quitar el mouse por el botón este volverá al estado
+													// original
+				btnRecargar.setBackground(new Color(12, 138, 199));
 			}
 		});
 		btnRecargar.setLayout(null);
 		btnRecargar.setBackground(new Color(12, 138, 199));
 		btnRecargar.setBounds(836, 125, 35, 35);
+		btnRecargar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		contentPane.add(btnRecargar);
 
 		JLabel lblRecargar = new JLabel("");
@@ -318,61 +383,81 @@ public class Busqueda extends JFrame {
 
 	private void cargarTablaR() {
 		List<Reserva> datosR = this.controllerR.getDatos();
-
 		datosR.forEach(reserva -> modelo
 				.addRow(new Object[] { reserva.getId(), reserva.getTipoHabitacion(), reserva.getFechaEntrada(),
 						reserva.getFechaSalida(), "$" + reserva.getValor(), reserva.getFormaPago() }));
 	}
-	
+
 	private void cargarTablaH() {
 		List<Huesped> datosH = this.controllerH.getDatos();
-
 		datosH.forEach(huesped -> modeloHuesped.addRow(new Object[] { huesped.getId(), huesped.getNombre(),
-				huesped.getApellido(), huesped.getFechaDeNacimiento(), huesped.getNacionalidad(), huesped.getTelefono(),
+				huesped.getApellidoP()+" "+huesped.getApellidoM(), huesped.getFechaDeNacimiento(), huesped.getNacionalidad(), huesped.getTelefono(),
 				controllerH.getReservas(huesped) }));
 	}
 
-	private void Buscar(String parametros, JScrollPane huespedes, JScrollPane reservas) {
+	private void recargar(JScrollPane huespedes, JScrollPane reservas, JTabbedPane panel) {
+		if (reservas.isVisible()) {
+			limpiarTablaR();
+			limpiarTablaH();
+			cargarTablaH();
+			cargarTablaR();
+			panel.setSelectedComponent(reservas); // Selecciona la pestaña "Reservas"
+			reservas.setVisible(true); // Hace visible el JScrollPane
+		} else if (huespedes.isVisible()) {
+			limpiarTablaR();
+			limpiarTablaH();
+			cargarTablaR();
+			cargarTablaH();
+			panel.setSelectedComponent(huespedes); // Selecciona la pestaña "Reservas"
+			huespedes.setVisible(true); // Hace visible el JScrollPane
+		}
+	}
 
-		Boolean esNumero = controllerH.esNumero(parametros);
-		if (esNumero == true) {
-			try {
-				reservas.setVisible(true);
-				Reserva datosR = controllerR.buscarId(Long.parseLong(parametros));
-				Object[] reserva = new Object[] { datosR.getId(), datosR.getTipoHabitacion(), datosR.getFechaEntrada(),
-						datosR.getFechaSalida(), "$" + datosR.getValor(), datosR.getFormaPago() };
-				limpiarTablaR();
-				modelo.addRow(reserva);
-			} catch (NoResultException e) {
-				MensajeError error = new MensajeError("No se encontro resultados");
-				error.setVisible(true);
-				limpiarTablaR();
-				limpiarTablaH();
-				cargarTablaR();
-				cargarTablaH();
+	private void Buscar(String parametros, JScrollPane huespedes, JScrollPane reservas, JTabbedPane panel) {
+		Boolean listaNumeros = controllerH.esListaNumeros(parametros);
+		if (listaNumeros == true) {
+			String[] ids = parametros.split(",");
+			panel.setSelectedComponent(reservas); // Selecciona la pestaña "Reservas"
+			reservas.setVisible(true); // Hace visible el JScrollPane
+			limpiarTablaR();
+			List<Long> idsNoEncontrados = new ArrayList<>();
+			Long idR;
+			for (String id : ids) {
+				idR = Long.parseLong(id);
+				try {
+					Reserva datosR = controllerR.buscarId(idR);
+					Object[] reserva = new Object[] { datosR.getId(), datosR.getTipoHabitacion(),
+							datosR.getFechaEntrada(), datosR.getFechaSalida(), "$" + datosR.getValor(),
+							datosR.getFormaPago() };
+					modelo.addRow(reserva);
+				} catch (NoResultException e) {
+					idsNoEncontrados.add(idR);
+				}
 			}
+			if (!idsNoEncontrados.isEmpty()) {
+				String idsNoEncontradosStr = idsNoEncontrados.stream().map(String::valueOf)
+						.collect(Collectors.joining(", "));
 
+				MensajeError error = new MensajeError(
+						"No se encontraron resultados para los siguientes números de reserva: " + idsNoEncontradosStr);
+				error.setVisible(true);
+			}
 		} else {
-
 			List<Huesped> datosH = controllerH.buscarApellido(parametros);
 
 			if (datosH.isEmpty()) {
 				MensajeError error = new MensajeError("No se encontro resultados");
 				error.setVisible(true);
-				limpiarTablaR();
-				limpiarTablaH();
-				cargarTablaR();
-				cargarTablaH();
 			} else {
-				huespedes.setVisible(true);
+				panel.setSelectedComponent(huespedes); // Selecciona la pestaña "Reservas"
+				huespedes.setVisible(true); // Hace visible el JScrollPane
 				limpiarTablaH();
 				datosH.forEach(ApellirdosH -> modeloHuesped
-						.addRow(new Object[] { ApellirdosH.getId(), ApellirdosH.getNombre(), ApellirdosH.getApellido(),
+						.addRow(new Object[] { ApellirdosH.getId(), ApellirdosH.getNombre(), ApellirdosH.getApellidoP()+" "+ApellirdosH.getApellidoM(),
 								ApellirdosH.getFechaDeNacimiento(), ApellirdosH.getNacionalidad(),
 								ApellirdosH.getTelefono(), controllerH.getReservas(ApellirdosH) }));
 			}
 		}
-
 	}
 
 	private Boolean filaSeleccionadaR() {
@@ -395,57 +480,120 @@ public class Busqueda extends JFrame {
 					.ifPresentOrElse(fila -> {
 						Long id = Long.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
 						String tipoHabitacion = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 1);
-						String fechaEntrada = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 2);
-						String fechaSalida = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 3);
-//						BigDecimal valor = new BigDecimal(modelo.getValueAt(tbReservas.getSelectedRow(), 4).toString());
+						java.sql.Date fechaEntrada = null;
+						java.sql.Date fechaSalida = null;
+						Date fechaEntradaD = null;
+						Date fechaSalidaD = null;
+						BigDecimal Valor = null;
+						try {
+							fechaEntrada = java.sql.Date
+									.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
+							fechaSalida = java.sql.Date
+									.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 3).toString());
+							fechaEntradaD = new Date(fechaEntrada.getTime());
+							fechaSalidaD = new Date(fechaSalida.getTime());
+							BigDecimal valorH = controllerR.tipoHabitacionvalor(tipoHabitacion);
+							Valor = controllerR.Calcular_Valor(fechaEntradaD, fechaSalidaD, valorH);
+						} catch (IllegalArgumentException e) {
+							MensajeError error = new MensajeError("La fecha proporcionada no es válida.");
+							error.setVisible(true);
+						}
+
 						String formaPago = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 5);
-						Reserva filaModificada = this.controllerR.buscarId(id);
-						filaModificada.setTipoHabitacion(tipoHabitacion);
-						filaModificada.setFechaEntrada(fechaEntrada);
-						filaModificada.setFechaSalida(fechaSalida);
-//						filaModificada.setValor(valor);
-						filaModificada.setFormaPago(formaPago);
-						controllerR.actualizar(filaModificada);
-						
-						limpiarTablaR();
-						cargarTablaR();
-						MensajeExito exito = new MensajeExito(
-								String.format("El ítem %d fue modificado con éxito", id), null);
-						exito.setVisible(true);
-					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
+
+						if (comprobarHabitaciom(tipoHabitacion)) {
+							if (comprobarfecha(fechaEntradaD, fechaSalidaD) == true) {
+								if (DateNow(fechaEntradaD)) {
+									if (comprobarFormaPago(formaPago)) {
+										Reserva filaModificada = this.controllerR.buscarId(id);
+										filaModificada.setTipoHabitacion(tipoHabitacion);
+										filaModificada.setFechaEntrada(fechaEntrada);
+										filaModificada.setFechaSalida(fechaSalida);
+										filaModificada.setValor(Valor);
+										filaModificada.setFormaPago(formaPago);
+										controllerR.actualizar(filaModificada);
+
+										limpiarTablaR();
+										cargarTablaR();
+										MensajeExito exito = new MensajeExito(
+												String.format("El ítem %d fue modificado con éxito.", id), null);
+										exito.setVisible(true);
+									} else {
+									}
+								} else {
+								}
+							} else {
+							}
+						} else {
+						}
+					}, () -> new MensajeError("Por favor, elije un item.").setVisible(true));
 
 		} else if (huespedes.isVisible()) {
 			if (filaSeleccionadaH()) {
-				MensajeError error = new MensajeError("Por favor, elije un item");
+				MensajeError error = new MensajeError("Por favor, elije un item.");
 				error.setVisible(true);
 				return;
 			}
-			
+
 			Optional.ofNullable(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
-			.ifPresentOrElse(fila -> {
-				Long id = Long.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 0).toString());
-				String nombre = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 1);
-				String apellido = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 2);
-				String fechaDeNacimiento = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 3);
-				String nacionalidad = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 4);
-				int telefono = Integer.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 5).toString());
-				Huesped filaModificada = this.controllerH.buscarId(id);
-				filaModificada.setNombre(nombre);
-				filaModificada.setApellido(apellido);
-				filaModificada.setFechaDeNacimiento(fechaDeNacimiento);
-				filaModificada.setNacionalidad(nacionalidad);
-				filaModificada.setTelefono(telefono);
-				controllerH.actualizar(filaModificada);
-				
-				limpiarTablaH();
-				cargarTablaH();
-				MensajeExito exito = new MensajeExito(
-						String.format("El ítem %d fue modificado con éxito", id), null);
-				exito.setVisible(true);
-			}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
+					.ifPresentOrElse(fila -> {
+						Long id = Long.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 0).toString());
+						String nombre = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 1);
+						String apellidos = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 2);
+						java.sql.Date fechaNacimiento = java.sql.Date
+								.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 3).toString());
+						Date fechaNacimientoD = new Date(fechaNacimiento.getTime());
+						String nacionalidad = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 4);
+						int telefono = 1;
+						try {
+							telefono = Integer
+									.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 5).toString());
+						} catch (NumberFormatException e) {
+
+						}
+						if(varificarApellidos(apellidos)) {
+							String[] partes = apellidos.split(" ");
+
+							String apellidoP = partes[0]; 
+							String apellidoM = partes[1]; 
+
+						Boolean telefonoV = telefonoValido(telefono);
+						if (verificarEdad(fechaNacimientoD)) {
+							if (telefonoV == true) {
+								Huesped filaModificada = this.controllerH.buscarId(id);
+								filaModificada.setNombre(nombre);
+								filaModificada.setApellidoP(apellidoP);
+								filaModificada.setApellidoM(apellidoM);
+								filaModificada.setFechaDeNacimiento(fechaNacimiento);
+								filaModificada.setNacionalidad(nacionalidad);
+								filaModificada.setTelefono(telefono);
+								controllerH.actualizar(filaModificada);
+
+								limpiarTablaH();
+								cargarTablaH();
+								MensajeExito exito = new MensajeExito(
+										String.format("El ítem %d fue modificado con éxito", id), null);
+								exito.setVisible(true);
+							}else {}
+							} else {
+								if (telefono == 1) {
+									String telefonoS = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(),
+											5);
+									new MensajeError(String.format("El teléfono %s es inválido.", telefonoS))
+											.setVisible(true);
+								} else {
+									new MensajeError(String.format("El teléfono %d es inválido.", telefono))
+											.setVisible(true);
+								}
+
+							}
+						} else {
+						}
+
+					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
 		}
 	}
-	
+
 	private void eliminar(JScrollPane huespedes, JScrollPane reservas) {
 		if (reservas.isVisible()) {
 			if (filaSeleccionadaR()) {
@@ -459,10 +607,10 @@ public class Busqueda extends JFrame {
 						Long id = Long.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
 						Reserva filaEliminada = this.controllerR.buscarId(id);
 						controllerR.eliminar(filaEliminada);
-						
+
 						modelo.removeRow(tbReservas.getSelectedRow());
-						MensajeExito exito = new MensajeExito(
-								String.format("El ítem %d fue eliminado con éxito", id), null);
+						MensajeExito exito = new MensajeExito(String.format("El ítem %d fue eliminado con éxito", id),
+								null);
 						exito.setVisible(true);
 					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
 
@@ -472,27 +620,29 @@ public class Busqueda extends JFrame {
 				error.setVisible(true);
 				return;
 			}
-			
+
 			Optional.ofNullable(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
-			.ifPresentOrElse(fila -> {
-				Long id = Long.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 0).toString());
-				Huesped filaEliminada = this.controllerH.buscarId(id);
-				MensajeError error = new MensajeError("¿Está seguro de que desea eliminar este huésped? Todas las reservas asociadas serán eliminadas.");
-				error.setVisible(true);
-				if(error.isOkPresionado()==true) {
-					controllerH.eliminar(filaEliminada);
-					
-					modeloHuesped.removeRow(tbHuespedes.getSelectedRow());
-					limpiarTablaR();
-					cargarTablaR();
-					MensajeExito exito = new MensajeExito(
-							String.format("El ítem %d fue eliminado con éxito", id), null);
-					exito.setVisible(true);
-				}else {}
-			}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
+					.ifPresentOrElse(fila -> {
+						Long id = Long.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 0).toString());
+						Huesped filaEliminada = this.controllerH.buscarId(id);
+						MensajeError error = new MensajeError(
+								"¿Está seguro de que desea eliminar este huésped? Todas las reservas asociadas serán eliminadas.");
+						error.setVisible(true);
+						if (error.isOkPresionado() == true) {
+							controllerH.eliminar(filaEliminada);
+
+							modeloHuesped.removeRow(tbHuespedes.getSelectedRow());
+							limpiarTablaR();
+							cargarTablaR();
+							MensajeExito exito = new MensajeExito(
+									String.format("El ítem %d fue eliminado con éxito", id), null);
+							exito.setVisible(true);
+						} else {
+						}
+					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
 		}
 	}
-	
+
 	private void limpiarTablaR() {
 		modelo.getDataVector().clear();
 	}
@@ -501,6 +651,159 @@ public class Busqueda extends JFrame {
 		modeloHuesped.getDataVector().clear();
 	}
 
+	private boolean comprobarfecha(Date fechaEntrada, Date fechaSalida) {
+		try {
+			BigDecimal dias = controllerR.Calcular_Dias(fechaEntrada, fechaSalida);
+
+			if (dias.compareTo(new BigDecimal(0)) == 1) {
+				return true;
+			} else {
+				MensajeError error = new MensajeError("La segunda fecha no puede ser menor a la primera.");
+				error.setVisible(true);
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	private Boolean DateNow(Date fechaEntrada) {
+		try {
+			LocalDate localDate = fechaEntrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate fechaHoy = LocalDate.now();
+			if (localDate.compareTo(fechaHoy) < 0) {
+				MensajeError error = new MensajeError("La fecha seleccionada ya no es válida.");
+				error.setVisible(true);
+				return false;
+			} else {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	private Boolean comprobarHabitaciom(String tipoHabitacion) {
+		Boolean valido = false;
+		switch (tipoHabitacion) {
+		case "Normal":
+			valido = true;
+			break;
+		case "Ejecutiva":
+			valido = true;
+			break;
+		case "Suite":
+			valido = true;
+			break;
+		default:
+			valido = false;
+			new MensajeError("El tipo de habitación especificado no es válido.").setVisible(true);
+			break;
+		}
+		return valido;
+	}
+
+	private Boolean comprobarFormaPago(String tipoHabitacion) {
+		Boolean valido = false;
+		switch (tipoHabitacion) {
+		case "Tarjeta de Crédito":
+			valido = true;
+			break;
+		case "Tarjeta de Débito":
+			valido = true;
+			break;
+		case "Dinero en efectivo":
+			valido = true;
+			break;
+		default:
+			valido = false;
+			new MensajeError("La forma de pago proporcionada no es válida.").setVisible(true);
+			break;
+		}
+		return valido;
+	}
+
+	private boolean verificarEdad(Date fechaNacimiento) {
+		LocalDate fechaNacimientoLocal = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int edad = Period.between(fechaNacimientoLocal, LocalDate.now()).getYears();
+		if (edad >= 18 && edad <= 100) {
+			System.out.println("El usuario es mayor de edad." + edad);
+			return true;
+		} else {
+			MensajeError error = new MensajeError(
+					"Se requiere que los usuarios sean mayores de edad y menores de 100 años para registrarse.");
+			error.setVisible(true);
+			System.out.println("El usuario es menor de edad. " + edad);
+			return false;
+		}
+	}
+
+	private Boolean telefonoValido(int numero) {
+		if (numero < 10 || numero > 999_999_999) {
+			return false;
+		}
+		return true;
+	}
+
+	private void bucarReservas(JScrollPane reservas, JTabbedPane panel) {
+		try {
+			Optional.ofNullable(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
+					.ifPresentOrElse(fila -> {
+
+						String idsT = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 6);
+
+						String[] ids = idsT.split(",");
+						panel.setSelectedComponent(reservas); // Selecciona la pestaña "Reservas"
+						reservas.setVisible(true); // Hace visible el JScrollPane
+						limpiarTablaR();
+						List<Long> idsNoEncontrados = new ArrayList<>();
+						Long idR;
+						for (String id : ids) {
+							idR = Long.parseLong(id);
+							try {
+								Reserva datosR = controllerR.buscarId(idR);
+								Object[] reserva = new Object[] { datosR.getId(), datosR.getTipoHabitacion(),
+										datosR.getFechaEntrada(), datosR.getFechaSalida(), "$" + datosR.getValor(),
+										datosR.getFormaPago() };
+								modelo.addRow(reserva);
+							} catch (NoResultException e) {
+								idsNoEncontrados.add(idR);
+							}
+						}
+						if (!idsNoEncontrados.isEmpty()) {
+							String idsNoEncontradosStr = idsNoEncontrados.stream().map(String::valueOf)
+									.collect(Collectors.joining(", "));
+
+							MensajeError error = new MensajeError(
+									"No se encontraron resultados para los siguientes números de reserva: "
+											+ idsNoEncontradosStr);
+							error.setVisible(true);
+						}
+
+					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+	}
+	
+
+	private boolean varificarApellidos(String apellidos) {
+		try {
+			String[] partes = apellidos.split(" ");
+
+			@SuppressWarnings("unused")
+			String apellidoP = partes[0]; 
+			@SuppressWarnings("unused")
+			String apellidoM = partes[1]; 
+			return true;
+		}catch (Exception e) {
+			MensajeError error = new MensajeError("Se requiere sus dos apellidos.");
+			error.setVisible(true);
+			return false;
+		}
+	}
+	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {
 		xMouse = evt.getX();

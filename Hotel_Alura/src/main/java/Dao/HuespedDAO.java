@@ -1,12 +1,14 @@
 package Dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import Modelo.Huesped;
-import Modelo.Reserva;
 import Utils.JPAUtils;
 
 public class HuespedDAO {
@@ -50,7 +52,7 @@ public class HuespedDAO {
 			throw e;
 		}
 	}
-	
+
 	public Huesped buscarId(Long id) {
 		String jpql = " SELECT H FROM Huesped AS H WHERE H.id=:id ";
 		return em.createQuery(jpql, Huesped.class).setParameter("id", id).getSingleResult();
@@ -65,25 +67,49 @@ public class HuespedDAO {
 		}
 		return huespedes;
 	}
-
-	public String getReservas(Huesped huesped) {
-		List<Long> reservasId = new ArrayList<>();
-		List<Reserva> reservas = huesped.getReservas();
-		for (Reserva Id : reservas) {
-			reservasId.add(Id.getId());
+	
+	public Huesped buscarHuesped(String apellidos) {
+		String[] partes = apellidos.split(" ");
+		String apellidoP=null;
+		String apellidoM=null;
+		try {
+		apellidoP = partes[0];
+		apellidoM = partes[1];
+		}catch (Exception e) {
 		}
-		CharSequence[] reservasIdArray = reservasId.stream().map(Object::toString).toArray(CharSequence[]::new);
-		return String.join(",", reservasIdArray);
+		
+		String jpql = " SELECT H FROM Huesped AS H WHERE H.ApellidoP=:apellidoP AND H.ApellidoM=:apellidoM";
+		return em.createQuery(jpql, Huesped.class).setParameter("apellidoP", apellidoP).setParameter("apellidoM",apellidoM).getSingleResult();
+		
 	}
-
+	
 	public List<Huesped> buscarApellido(String parametro) {
-		List<Huesped> huesped = null;
-			try {
-				String jqpl = "SELECT h FROM Huesped As h WHERE h.Apellido=:Parametro";;
-				huesped = em.createQuery(jqpl, Huesped.class).setParameter("Parametro", parametro).getResultList();
-
-			} catch (Exception e) {
-			}
-		return huesped;
+		String[] partes = parametro.split(" ");
+		String apellidoP=null;
+		String apellidoM=null;
+		try {
+		apellidoP = partes[0];
+		apellidoM = partes[1];
+		}catch (Exception e) {
+		}
+		
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Huesped> query = builder.createQuery(Huesped.class);
+		Root<Huesped> from=query.from(Huesped.class); 
+		
+		Predicate filtro = builder.and();
+		if(apellidoP!=null && !apellidoP.trim().isEmpty()) {
+			filtro=builder.and(filtro,builder.equal(from.get("ApellidoP"),apellidoP));
+		}
+		if(apellidoM!=null && !apellidoM.trim().isEmpty()) {
+			filtro=builder.and(filtro,builder.equal(from.get("ApellidoM"),apellidoM));
+		}
+		
+		query=query.where(filtro);
+		
+		List<Huesped> resultList = em.createQuery(query).getResultList();
+		System.out.println(resultList);
+		return 	resultList;
 	}
+	
 }

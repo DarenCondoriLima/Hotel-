@@ -49,8 +49,7 @@ public class Reserva_Controller {
 		public BigDecimal Calcular_Dias(Date date1, Date date2) {
 //			(24 horas * 60 minutos * 60 segundos * 1000 milisegundos), se utiliza obtener los milisegundos de un dia,
 //			pues la diferencia entre las fechas da un resultado en milisegundos.
-			BigDecimal diasReserva = new BigDecimal((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24))
-					.add(new BigDecimal(1));
+			BigDecimal diasReserva = new BigDecimal((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
 			System.out.println("Dias= " + diasReserva);
 			return diasReserva;
 		}
