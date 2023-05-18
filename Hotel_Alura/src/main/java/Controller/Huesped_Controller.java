@@ -34,12 +34,12 @@ public class Huesped_Controller {
 		return this.huespedDAO.getDatos();
 	}
 
-	public List<Huesped> buscarApellido(String parametros) {
-		return this.huespedDAO.buscarApellido(parametros);
+	public List<Huesped> bucarHuespedApellidos(String apellidos) {
+		return this.huespedDAO.bucarHuespedApellidos(apellidos);
 	}
 	
-	public Huesped buscarHuesped(String apellidos) {
-		return this.huespedDAO.buscarHuesped(apellidos);
+	public Huesped buscarHuesped(String nombre,String apellidos) {
+		return this.huespedDAO.buscarHuesped(nombre,apellidos);
 	}
 	
 	//Métodos que no involucran conexión con la Base de Datos.

@@ -18,7 +18,7 @@ public class Puebas_Busquedas {
 		String texto = "Condori";
 		String numero = "38";
 
-		List<Huesped> apellido = controllerH.buscarApellido("Perez");
+		List<Huesped> apellido = controllerH.bucarHuespedApellidos("Perez");
 
 //		String jqpl = "SELECT h FROM Huesped As h WHERE h.Apellido=:Parametro";
 //		List<Huesped> huesped = em.createQuery(jqpl, Huesped.class).setParameter("Parametro", texto).getResultList();

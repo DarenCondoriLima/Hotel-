@@ -68,7 +68,7 @@ public class HuespedDAO {
 		return huespedes;
 	}
 	
-	public Huesped buscarHuesped(String apellidos) {
+	public Huesped buscarHuesped(String nombre,String apellidos) {
 		String[] partes = apellidos.split(" ");
 		String apellidoP=null;
 		String apellidoM=null;
@@ -78,13 +78,13 @@ public class HuespedDAO {
 		}catch (Exception e) {
 		}
 		
-		String jpql = " SELECT H FROM Huesped AS H WHERE H.ApellidoP=:apellidoP AND H.ApellidoM=:apellidoM";
-		return em.createQuery(jpql, Huesped.class).setParameter("apellidoP", apellidoP).setParameter("apellidoM",apellidoM).getSingleResult();
+		String jpql = " SELECT H FROM Huesped AS H WHERE H.nombre=:nombre AND H.ApellidoP=:apellidoP AND H.ApellidoM=:apellidoM";
+		return em.createQuery(jpql, Huesped.class).setParameter("nombre", nombre).setParameter("apellidoP", apellidoP).setParameter("apellidoM",apellidoM).getSingleResult();
 		
 	}
 	
-	public List<Huesped> buscarApellido(String parametro) {
-		String[] partes = parametro.split(" ");
+	public List<Huesped> bucarHuespedApellidos(String apellidos) {
+		String[] partes = apellidos.split(" ");
 		String apellidoP=null;
 		String apellidoM=null;
 		try {

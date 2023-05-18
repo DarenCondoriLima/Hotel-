@@ -213,22 +213,19 @@ public class RegistroHuesped extends JFrame {
 		txtNacionalidad.setBounds(560, 350, 289, 36);
 		txtNacionalidad.setBackground(SystemColor.text);
 		txtNacionalidad.setFont(new Font("Roboto", Font.PLAIN, 16));
-		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] { " ", "afgano-afgana", "alemán-", "alemana",
-				"árabe-árabe", "argentino-argentina", "australiano-australiana", "belga-belga", "boliviano-boliviana",
-				"brasileño-brasileña", "camboyano-camboyana", "canadiense-canadiense", "chileno-chilena", "chino-china",
-				"colombiano-colombiana", "coreano-coreana", "costarricense-costarricense", "cubano-cubana",
-				"danés-danesa", "ecuatoriano-ecuatoriana", "egipcio-egipcia", "salvadoreño-salvadoreña",
-				"escocés-escocesa", "español-española", "estadounidense-estadounidense", "estonio-estonia",
-				"etiope-etiope", "filipino-filipina", "finlandés-finlandesa", "francés-francesa", "galés-galesa",
-				"griego-griega", "guatemalteco-guatemalteca", "haitiano-haitiana", "holandés-holandesa",
-				"hondureño-hondureña", "indonés-indonesa", "inglés-inglesa", "iraquí-iraquí", "iraní-iraní",
-				"irlandés-irlandesa", "israelí-israelí", "italiano-italiana", "japonés-japonesa", "jordano-jordana",
-				"laosiano-laosiana", "letón-letona", "letonés-letonesa", "malayo-malaya", "marroquí-marroquí",
-				"mexicano-mexicana", "nicaragüense-nicaragüense", "noruego-noruega", "neozelandés-neozelandesa",
-				"panameño-panameña", "paraguayo-paraguaya", "peruano-peruana", "polaco-polaca", "portugués-portuguesa",
-				"puertorriqueño-puertorriqueño", "dominicano-dominicana", "rumano-rumana", "ruso-rusa", "sueco-sueca",
-				"suizo-suiza", "tailandés-tailandesa", "taiwanes-taiwanesa", "turco-turca", "ucraniano-ucraniana",
-				"uruguayo-uruguaya", "venezolano-venezolana", "vietnamita-vietnamita" }));
+		txtNacionalidad.setModel(new DefaultComboBoxModel(new String[] {
+				  "Seleccione una nacionalidad",
+				  "Afgano(a)", "Alemán(a)", "Árabe", "Argentino(a)", "Australiano(a)", "Belga", "Boliviano(a)",
+				  "Brasileño(a)", "Camboyano(a)", "Canadiense", "Chileno(a)", "Chino(a)", "Colombiano(a)", "Coreano(a)",
+				  "Costarricense", "Cubano(a)", "Danés(a)", "Ecuatoriano(a)", "Egipcio(a)", "Salvadoreño(a)", "Escocés(a)",
+				  "Español(a)", "Estadounidense", "Estonio(a)", "Etiope", "Filipino(a)", "Finlandés(a)", "Francés(a)",
+				  "Galés(a)", "Griego(a)", "Guatemalteco(a)", "Haitiano(a)", "Holandés(a)", "Hondureño(a)", "Indonés(a)",
+				  "Inglés(a)", "Iraquí", "Iraní", "Irlandés(a)", "Israelí", "Italiano(a)", "Japonés(a)", "Jordano(a)",
+				  "Laosiano(a)", "Letón(a)", "Malayo(a)", "Marroquí", "Mexicano(a)", "Nicaragüense", "Noruego(a)",
+				  "Neozelandés(a)", "Panameño(a)", "Paraguayo(a)", "Peruano(a)", "Polaco(a)", "Portugués(a)",
+				  "Puertorriqueño(a)", "Dominicano(a)", "Rumano(a)", "Ruso(a)", "Sueco(a)", "Suizo(a)", "Tailandés(a)",
+				  "Taiwanés(a)", "Turco(a)", "Ucraniano(a)", "Uruguayo(a)", "Venezolano(a)", "Vietnamita"
+				}));
 		contentPane.add(txtNacionalidad);
 
 		JLabel lblNombre = new JLabel("NOMBRE");
@@ -404,54 +401,54 @@ public class RegistroHuesped extends JFrame {
 		String nacionalidad = (String) txtNacionalidad.getSelectedItem();
 		java.sql.Date fechaNacimientosql = new java.sql.Date(fechaNacimiento.getTime());
 		int telefono = Integer.parseInt(txtTelefono.getText());
-		if(verificarHuesped(txtApellido.getText())) {
-			
-			Huesped huesped = controllerH.buscarHuesped(txtApellido.getText());
+		if (verificarHuesped(txtNombre.getText(), txtApellido.getText())) {
+
+			Huesped huesped = controllerH.buscarHuesped(txtNombre.getText(), txtApellido.getText());
 			Reserva id = controllerR.buscarId(idActual);
 			huesped.agregarReserva(id);
 			id.setHuesped(huesped);
 			controllerR.actualizar(id);
-		}else {
+		} else {
 			try {
 				String apellidos = txtApellido.getText();
 				String[] partes = apellidos.split(" ");
-				
-				String apellidoP = partes[0]; 
-				String apellidoM = partes[1]; 
-				
-				Huesped huesped = new Huesped(txtNombre.getText(),apellidoP,apellidoM , fechaNacimientosql, nacionalidad,
-						telefono);
-				
+
+				String apellidoP = partes[0];
+				String apellidoM = partes[1];
+
+				Huesped huesped = new Huesped(txtNombre.getText(), capitalizarPrimeraLetra(apellidoP), capitalizarPrimeraLetra(apellidoM), fechaNacimientosql,
+						nacionalidad, telefono);
+
 				Reserva id = controllerR.buscarId(idActual);
 				controllerH.guardar(huesped);
 				huesped.agregarReserva(id);
 				id.setHuesped(huesped);
 				controllerR.actualizar(id);
-				
-			}catch (Exception e) {
-				
+
+			} catch (Exception e) {
+
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private boolean varificarApellidos() {
 		try {
 			String apellidos = txtApellido.getText();
 			String[] partes = apellidos.split(" ");
 
 			@SuppressWarnings("unused")
-			String apellidoP = partes[0]; 
+			String apellidoP = partes[0];
 			@SuppressWarnings("unused")
-			String apellidoM = partes[1]; 
+			String apellidoM = partes[1];
 			return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			MensajeError error = new MensajeError("Se requiere sus dos apellidos.");
 			error.setVisible(true);
 			return false;
 		}
 	}
-	
+
 	private boolean verificarEdad() {
 		try {
 			Date fechaNacimiento = txtFechaN.getDate();
@@ -480,13 +477,24 @@ public class RegistroHuesped extends JFrame {
 		return true;
 	}
 
-	private boolean verificarHuesped(String apellidos) {
+	private boolean verificarHuesped(String nombre,String apellidos) {
 		try {
-		controllerH.buscarHuesped(apellidos);
-		return true;
-		}catch (Exception e) {
-		return false;	
+			controllerH.buscarHuesped(nombre,apellidos);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
+	}
+	
+	public String capitalizarPrimeraLetra(String texto) {
+	    if (texto == null || texto.isEmpty()) {
+	        return texto;
+	    }
+	    
+	    String primeraLetra = texto.substring(0, 1).toUpperCase();
+	    String restoTexto = texto.substring(1);
+	    
+	    return primeraLetra + restoTexto;
 	}
 	
 	// Código que permite mover la ventana por la pantalla según la posición de "x"

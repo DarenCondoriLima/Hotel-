@@ -391,8 +391,8 @@ public class Busqueda extends JFrame {
 	private void cargarTablaH() {
 		List<Huesped> datosH = this.controllerH.getDatos();
 		datosH.forEach(huesped -> modeloHuesped.addRow(new Object[] { huesped.getId(), huesped.getNombre(),
-				huesped.getApellidoP()+" "+huesped.getApellidoM(), huesped.getFechaDeNacimiento(), huesped.getNacionalidad(), huesped.getTelefono(),
-				controllerH.getReservas(huesped) }));
+				huesped.getApellidoP() + " " + huesped.getApellidoM(), huesped.getFechaDeNacimiento(),
+				huesped.getNacionalidad(), huesped.getTelefono(), controllerH.getReservas(huesped) }));
 	}
 
 	private void recargar(JScrollPane huespedes, JScrollPane reservas, JTabbedPane panel) {
@@ -413,10 +413,10 @@ public class Busqueda extends JFrame {
 		}
 	}
 
-	private void Buscar(String parametros, JScrollPane huespedes, JScrollPane reservas, JTabbedPane panel) {
-		Boolean listaNumeros = controllerH.esListaNumeros(parametros);
+	private void Buscar(String apellidos, JScrollPane huespedes, JScrollPane reservas, JTabbedPane panel) {
+		Boolean listaNumeros = controllerH.esListaNumeros(apellidos);
 		if (listaNumeros == true) {
-			String[] ids = parametros.split(",");
+			String[] ids = apellidos.split(",");
 			panel.setSelectedComponent(reservas); // Selecciona la pestaña "Reservas"
 			reservas.setVisible(true); // Hace visible el JScrollPane
 			limpiarTablaR();
@@ -431,6 +431,7 @@ public class Busqueda extends JFrame {
 							datosR.getFormaPago() };
 					modelo.addRow(reserva);
 				} catch (NoResultException e) {
+					e.printStackTrace();
 					idsNoEncontrados.add(idR);
 				}
 			}
@@ -443,7 +444,7 @@ public class Busqueda extends JFrame {
 				error.setVisible(true);
 			}
 		} else {
-			List<Huesped> datosH = controllerH.buscarApellido(parametros);
+			List<Huesped> datosH = controllerH.bucarHuespedApellidos(apellidos);
 
 			if (datosH.isEmpty()) {
 				MensajeError error = new MensajeError("No se encontro resultados");
@@ -452,10 +453,10 @@ public class Busqueda extends JFrame {
 				panel.setSelectedComponent(huespedes); // Selecciona la pestaña "Reservas"
 				huespedes.setVisible(true); // Hace visible el JScrollPane
 				limpiarTablaH();
-				datosH.forEach(ApellirdosH -> modeloHuesped
-						.addRow(new Object[] { ApellirdosH.getId(), ApellirdosH.getNombre(), ApellirdosH.getApellidoP()+" "+ApellirdosH.getApellidoM(),
-								ApellirdosH.getFechaDeNacimiento(), ApellirdosH.getNacionalidad(),
-								ApellirdosH.getTelefono(), controllerH.getReservas(ApellirdosH) }));
+				datosH.forEach(ApellirdosH -> modeloHuesped.addRow(new Object[] { ApellirdosH.getId(),
+						ApellirdosH.getNombre(), ApellirdosH.getApellidoP() + " " + ApellirdosH.getApellidoM(),
+						ApellirdosH.getFechaDeNacimiento(), ApellirdosH.getNacionalidad(), ApellirdosH.getTelefono(),
+						controllerH.getReservas(ApellirdosH) }));
 			}
 		}
 	}
@@ -549,32 +550,36 @@ public class Busqueda extends JFrame {
 							telefono = Integer
 									.valueOf(modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(), 5).toString());
 						} catch (NumberFormatException e) {
-
+							e.printStackTrace();
 						}
-						if(varificarApellidos(apellidos)) {
+						if (varificarApellidos(apellidos)) {
 							String[] partes = apellidos.split(" ");
 
-							String apellidoP = partes[0]; 
-							String apellidoM = partes[1]; 
+							String apellidoP = partes[0];
+							String apellidoM = partes[1];
 
-						Boolean telefonoV = telefonoValido(telefono);
-						if (verificarEdad(fechaNacimientoD)) {
-							if (telefonoV == true) {
-								Huesped filaModificada = this.controllerH.buscarId(id);
-								filaModificada.setNombre(nombre);
-								filaModificada.setApellidoP(apellidoP);
-								filaModificada.setApellidoM(apellidoM);
-								filaModificada.setFechaDeNacimiento(fechaNacimiento);
-								filaModificada.setNacionalidad(nacionalidad);
-								filaModificada.setTelefono(telefono);
-								controllerH.actualizar(filaModificada);
+							Boolean telefonoV = telefonoValido(telefono);
+							if (verificarEdad(fechaNacimientoD)) {
+								if (comprobarNacionalidad(nacionalidad)) {
+									if (telefonoV == true) {
+										Huesped filaModificada = this.controllerH.buscarId(id);
+										filaModificada.setNombre(nombre);
+										filaModificada.setApellidoP(capitalizarPrimeraLetra(apellidoP));
+										filaModificada.setApellidoM(capitalizarPrimeraLetra(apellidoM));
+										filaModificada.setFechaDeNacimiento(fechaNacimiento);
+										filaModificada.setNacionalidad(capitalizarPrimeraLetra(nacionalidad));
+										filaModificada.setTelefono(telefono);
+										controllerH.actualizar(filaModificada);
 
-								limpiarTablaH();
-								cargarTablaH();
-								MensajeExito exito = new MensajeExito(
-										String.format("El ítem %d fue modificado con éxito", id), null);
-								exito.setVisible(true);
-							}else {}
+										limpiarTablaH();
+										cargarTablaH();
+										MensajeExito exito = new MensajeExito(
+												String.format("El ítem %d fue modificado con éxito", id), null);
+										exito.setVisible(true);
+									} else {
+									}
+								} else {
+								}
 							} else {
 								if (telefono == 1) {
 									String telefonoS = (String) modeloHuesped.getValueAt(tbHuespedes.getSelectedRow(),
@@ -663,6 +668,7 @@ public class Busqueda extends JFrame {
 				return false;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 
@@ -680,6 +686,7 @@ public class Busqueda extends JFrame {
 				return true;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 
@@ -703,6 +710,30 @@ public class Busqueda extends JFrame {
 			break;
 		}
 		return valido;
+	}
+
+	private boolean comprobarNacionalidad(String nacionalidad) {
+		String[] nacionalidadesValidas = { "Afgano(a)", "Alemán(a)", "Árabe", "Argentino(a)", "Australiano(a)", "Belga",
+				"Boliviano(a)", "Brasileño(a)", "Camboyano(a)", "Canadiense", "Chileno(a)", "Chino(a)", "Colombiano(a)",
+				"Coreano(a)", "Costarricense", "Cubano(a)", "Danés(a)", "Ecuatoriano(a)", "Egipcio(a)",
+				"Salvadoreño(a)", "Escocés(a)", "Español(a)", "Estadounidense", "Estonio(a)", "Etiope", "Filipino(a)",
+				"Finlandés(a)", "Francés(a)", "Galés(a)", "Griego(a)", "Guatemalteco(a)", "Haitiano(a)", "Holandés(a)",
+				"Hondureño(a)", "Indonés(a)", "Inglés(a)", "Iraquí", "Iraní", "Irlandés(a)", "Israelí", "Italiano(a)",
+				"Japonés(a)", "Jordano(a)", "Laosiano(a)", "Letón(a)", "Malayo(a)", "Marroquí", "Mexicano(a)",
+				"Nicaragüense", "Noruego(a)", "Neozelandés(a)", "Panameño(a)", "Paraguayo(a)", "Peruano(a)",
+				"Polaco(a)", "Portugués(a)", "Puertorriqueño(a)", "Dominicano(a)", "Rumano(a)", "Ruso(a)", "Sueco(a)",
+				"Suizo(a)", "Tailandés(a)", "Taiwanés(a)", "Turco(a)", "Ucraniano(a)", "Uruguayo(a)", "Venezolano(a)",
+				"Vietnamita" };
+
+		for (String nacionalidadValida : nacionalidadesValidas) {
+			if (nacionalidadValida.equalsIgnoreCase(nacionalidad)) {
+				System.out.println("nacionalidad correcta");
+				return true;
+			}
+		}
+
+		new MensajeError("La nacionalidad proporcionada no es válida.").setVisible(true);
+		return false;
 	}
 
 	private Boolean comprobarFormaPago(String tipoHabitacion) {
@@ -769,6 +800,7 @@ public class Busqueda extends JFrame {
 										datosR.getFormaPago() };
 								modelo.addRow(reserva);
 							} catch (NoResultException e) {
+								e.printStackTrace();
 								idsNoEncontrados.add(idR);
 							}
 						}
@@ -784,25 +816,37 @@ public class Busqueda extends JFrame {
 
 					}, () -> new MensajeError("Por favor, elije un item").setVisible(true));
 		} catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
 		}
 	}
-	
 
 	private boolean varificarApellidos(String apellidos) {
 		try {
 			String[] partes = apellidos.split(" ");
 
 			@SuppressWarnings("unused")
-			String apellidoP = partes[0]; 
+			String apellidoP = partes[0];
 			@SuppressWarnings("unused")
-			String apellidoM = partes[1]; 
+			String apellidoM = partes[1];
 			return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			MensajeError error = new MensajeError("Se requiere sus dos apellidos.");
 			error.setVisible(true);
 			return false;
 		}
 	}
+
+	public String capitalizarPrimeraLetra(String texto) {
+	    if (texto == null || texto.isEmpty()) {
+	        return texto;
+	    }
+	    
+	    String primeraLetra = texto.substring(0, 1).toUpperCase();
+	    String restoTexto = texto.substring(1);
+	    
+	    return primeraLetra + restoTexto;
+	}
+
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {

@@ -15,8 +15,7 @@ public class JPAUtils {
 	public static EntityManager getEntityManager() {
 		if (entityManagerFactory == null) {
 			entityManagerFactory = Persistence.createEntityManagerFactory(DataBase);
-			System.out.println("Abriendo Conexión");
-		}else {System.out.println("Conexión ya abrierta");}
+		}else {}
 		return entityManagerFactory.createEntityManager();
 	}
 }

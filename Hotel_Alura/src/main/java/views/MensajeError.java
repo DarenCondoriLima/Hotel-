@@ -58,7 +58,8 @@ public class MensajeError extends JDialog {
 		{
 			JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setIcon(new ImageIcon(MensajeError.class.getResource("/imagenes/Error-100px.png")));
-			lblNewLabel.setBounds((int) (27+(size*0.375)), 11, 100, 100);
+			int imageX = ((getWidth() - lblNewLabel.getIcon().getIconWidth()) / 2)-10;
+	        lblNewLabel.setBounds(imageX, 11, lblNewLabel.getIcon().getIconWidth(), lblNewLabel.getIcon().getIconHeight());
 			contentPanel.add(lblNewLabel);
 		}
 		{
@@ -66,12 +67,19 @@ public class MensajeError extends JDialog {
 			txtMensaje.setHorizontalAlignment(SwingConstants.CENTER);
 			txtMensaje.setForeground(new Color(255, 0, 0));
 			txtMensaje.setFont(new Font("Arial", Font.BOLD, 18));
-			txtMensaje.setBounds(27, 98,size, 56);
+			int messageX = ((getWidth() - size) / 2)-10;
+	        txtMensaje.setBounds(messageX, 98, size, 56);
 			contentPanel.add(txtMensaje);
 		}
 		{
 			JButton okButton = new JButton("OK");
-			okButton.setBounds((int) (27+(size*0.43)), 147, 56, 30);
+			int buttonWidth = 56;
+		    int buttonHeight = 30; 
+		    int buttonX = ((getWidth() - buttonWidth) / 2)-10;
+		    int buttonY = 147;
+		    okButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+		    okButton.setFocusable(false);
+		    okButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 			contentPanel.add(okButton);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

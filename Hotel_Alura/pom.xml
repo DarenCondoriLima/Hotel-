@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>hotelAlura</groupId>
 	<artifactId>Hotel_Alura</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>Hotel Alura</name>
 	<description>Este es un programa para poder hacer reservaciones y visualizarlas.</description>
 	<properties>
