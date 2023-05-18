@@ -57,6 +57,7 @@
 	</section>
 	<section name="OptionalMessageDialog.hide.">
 		<item key="org.eclipse.jdt.ui.typecomment.deprecated" value="true"/>
+		<item key="RunnableJar.export.ipwarning" value="false"/>
 	</section>
 	<section name="NewClassWizardPage">
 		<item key="create_constructor" value="false"/>
@@ -144,5 +145,24 @@
 		<item key="SearchInAppLibs" value="true"/>
 	</section>
 	<section name="CallHierarchySearchScope">
+	</section>
+	<section name="FatJarPackageWizard">
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_SAVE" value="false"/>
+		<item key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION" value="E:\1-Oracle\Java\Java y Spring Boot G4 - ONE\Challenge One Hotel Alura"/>
+		<item key="FatJarPackageWizardPage.LIBRARY_HANDLING" value="2"/>
+		<item key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME" value="MenuPrincipal - Hotel_Alura"/>
+		<item key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION" value="C:\Users\DAREN\Downloads\ejecutable\Hotel Alura.jar"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\DAREN\Downloads\ejecutable\Hotel Alura.jar"/>
+			<item value="Hotel_Alura\Ejecutable\Hotel Alura-m.jar"/>
+			<item value="Hotel_Alura\Ejecutable\Hotel Alura.jar"/>
+			<item value="Hotel_Alura/Ejecutable/Hotel Alura.jar"/>
+			<item value="Hotel_Alura\Hotel Alura.jar"/>
+			<item value="Hotel_Alura/Hotel Alura.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="E:\1-Oracle\Java\Java y Spring Boot G4 - ONE\Challenge One Hotel Alura.xml"/>
+			<item value=".xml"/>
+		</list>
 	</section>
 </section>

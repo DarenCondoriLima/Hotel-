@@ -400,6 +400,7 @@ public class ReservasView extends JFrame {
 	}
 	
 	private boolean comprobarfecha() {
+		try {
 		Date fechaEntrada = txtFechaEntrada.getDate();
 		Date fechaSalida = txtFechaSalida.getDate();
 		BigDecimal dias = controllerR.Calcular_Dias(fechaEntrada, fechaSalida);
@@ -410,11 +411,15 @@ public class ReservasView extends JFrame {
 			MensajeError error = new MensajeError("La segunda fecha no puede ser menor a la primera.");
 			error.setVisible(true);
 			return false;
+		}}
+		catch (NullPointerException e) {
+			return false;
 		}
 		
 	}
 	
 	private Boolean DateNow() {
+		try {
 		Date fechaEntrada = txtFechaEntrada.getDate();
 		LocalDate localDate = fechaEntrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate fechaHoy = LocalDate.now();
@@ -424,6 +429,9 @@ public class ReservasView extends JFrame {
 			return false;
 		}else {
 			return true;
+		}}
+		catch (Exception e) {
+			return false;
 		}
 		
 	}

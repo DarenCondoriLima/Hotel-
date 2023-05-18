@@ -234,7 +234,7 @@ public class RegistroHuesped extends JFrame {
 		lblNombre.setFont(new Font("Roboto Black", Font.PLAIN, 18));
 		contentPane.add(lblNombre);
 
-		JLabel lblApellido = new JLabel("APELLIDO");
+		JLabel lblApellido = new JLabel("APELLIDOS");
 		lblApellido.setBounds(560, 189, 255, 14);
 		lblApellido.setForeground(SystemColor.textInactiveText);
 		lblApellido.setFont(new Font("Roboto Black", Font.PLAIN, 18));

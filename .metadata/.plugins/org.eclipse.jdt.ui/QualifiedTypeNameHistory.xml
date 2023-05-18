@@ -35,7 +35,6 @@
     <fullyQualifiedTypeName name="antlr.collections.impl.Vector"/>
     <fullyQualifiedTypeName name="java.lang.Object"/>
     <fullyQualifiedTypeName name="javax.persistence.NoResultException"/>
-    <fullyQualifiedTypeName name="views.MensajeExito"/>
     <fullyQualifiedTypeName name="views.Busqueda"/>
     <fullyQualifiedTypeName name="antlr.debug.MessageAdapter"/>
     <fullyQualifiedTypeName name="java.util.Optional"/>
@@ -54,10 +53,11 @@
     <fullyQualifiedTypeName name="java.awt.Component"/>
     <fullyQualifiedTypeName name="javax.swing.event.ListSelectionListener"/>
     <fullyQualifiedTypeName name="javax.swing.event.ListSelectionEvent"/>
-    <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
     <fullyQualifiedTypeName name="org.hibernate.internal.build.AllowSysOut"/>
     <fullyQualifiedTypeName name="java.lang.NumberFormatException"/>
     <fullyQualifiedTypeName name="java.lang.ArrayIndexOutOfBoundsException"/>
-    <fullyQualifiedTypeName name="views.MensajeError"/>
     <fullyQualifiedTypeName name="Modelo.Huesped"/>
+    <fullyQualifiedTypeName name="views.MensajeError"/>
+    <fullyQualifiedTypeName name="views.MensajeExito"/>
+    <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
 </qualifiedTypeNameHistroy>

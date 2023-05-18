@@ -254,7 +254,7 @@ public class Busqueda extends JFrame {
 				String text = txtBuscar.getText();
 				if (text.isEmpty()) {
 					MensajeError error = new MensajeError(
-							"Se requiere que ingrese los números de reservas o el apellido del huésped");
+							"Se requiere que ingrese los números de reservas o los apellidos del huésped");
 					error.setVisible(true);
 				} else {
 					Buscar(text, scroll_tableHuespedes, scroll_table, panel);
