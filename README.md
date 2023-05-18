@@ -1,9 +1,9 @@
 # Hotel Alura-Challenge Oracle Next Education (ONE)
 ## Índice
 
-- [Descripción del Proyecto](#descripcion-del-proyecto)
-- [Funcionalidad del Programa](#funcionalidad-del-programa)
-- [Herramientas utilizadas](#herramientas-utilizadas)
+- [Descripción del Proyecto](#descripción-del-proyecto-page_facing_up)
+- [Funcionalidad del Programa](#funcionalidad-del-programa-white_check_mark)
+- [Herramientas utilizadas](#hammer-herramientas-utilizadas-wrench)
 
 ## **Descripción del Proyecto:** :page_facing_up:
 Esta es mi solución al cuarto Challenge ONE propuesto por Alura, Esté consta de crear un programa con el cual poder realizar el registro de reservas y huéspedes, así como poder administrarlas.
@@ -34,6 +34,6 @@ Este programa utiliza [db4free](https://www.db4free.net/ "db4free") el cual es u
 - La versión de java utilizada es [Java SDK versión 19.0.2](https://www.oracle.com/java/technologies/downloads/).
 - El IDE usado fue [Eclipse versión 2022-12 (4.26.0)](https://www.eclipse.org/downloads/).
 - La base de datos fue [MySQL](https://www.mysql.com/).
-- El Host para la Datebase es [db4free](https://www.db4free.net/ "db4free")
+- El Host para la Datebase es [db4free](https://www.db4free.net/ "db4free").
 - Para implementar la interfaz gráfica se usó [WindowBuilder](https://www.eclipse.org/windowbuilder/).
 
